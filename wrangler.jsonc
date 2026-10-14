@@ -1,0 +1,27 @@
+{
+  // Config for the Worker. JSONC (JSON + comments) is what Cloudflare's
+  // one-click deploy reliably writes the auto-created database ID back into.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "foogl",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-01",
+
+  // The database. We deliberately DON'T hardcode a database_id here:
+  // the "Deploy to Cloudflare" button provisions a fresh D1 for whoever
+  // clicks it and fills this in automatically. Locally, wrangler simulates
+  // it by name. (Maintainer note: to redeploy your own live instance via
+  // the CLI, temporarily add your database_id back to this block.)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "foogl-db","database_id": "4498ab3d-8908-4d61-87cb-5a5ba6fa3685"
+    }
+  ]
+
+  // Custom domains (for later): once live on *.workers.dev, point your own
+  // domain at this Worker by adding it in the Cloudflare dashboard, or add a
+  // route here — e.g. "routes": [{ "pattern": "go.yourproduct.com", "custom_domain": true }].
+  // NOTE: if you add a "routes" array, it becomes the authoritative list — you
+  // must include EVERY custom domain the Worker serves, or the omitted ones get
+  // unbound on deploy.
+}
